@@ -4,7 +4,6 @@ import com.library.domain.BookModel;
 import com.library.producer.SpringAvroProducer;
 import com.library.repository.LibraryRepository;
 import com.library.schema.Book;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,22 +25,27 @@ class LibraryServiceTest {
     @Mock
     SpringAvroProducer producer;
 
-    @Nested
-    class BorrowBook {
+    Integer bookId = 1;
+    BookModel bookModel = BookModel.builder().name("demo").isBorrowed(false).id(bookId).build();
+    Book book = Book.newBuilder().setId(bookModel.getId()).setIsBorrowed(bookModel.isBorrowed())
+            .setName(bookModel.getName()).build();
 
-        Integer bookId = 1;
-        BookModel bookModel = BookModel.builder().id(bookId).build();
-        Book book = Book.newBuilder().setId(bookModel.getId()).setName(bookModel.getName()).build();
+    @Test
+    void shouldBorrowBook() {
+        when(libraryRepository.borrowBook(bookId)).thenReturn(bookModel);
 
-        @Test
-        void shouldBorrowBook() {
-            when(libraryRepository.borrowBook(bookId)).thenReturn(bookModel);
+        BookModel result = libraryService.getBook(bookId);
 
-            BookModel result = libraryService.getBook(bookId);
+        assertThat(result.getId(), is(bookId));
+        verify(producer).send(book);
+    }
 
-            assertThat(result.getId(), is(bookId));
-            verify(producer).send(book);
-        }
+    @Test
+    void shouldAddTheBook() {
+        libraryService.addBook(bookModel);
+
+        verify(libraryRepository).addBook(bookModel);
+        verify(producer).send(book);
     }
 
 }

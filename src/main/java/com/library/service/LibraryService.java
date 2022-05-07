@@ -19,8 +19,19 @@ public class LibraryService {
 
     public BookModel getBook(Integer bookId) {
         BookModel bookModel = libraryRepository.borrowBook(bookId);
-        Book book = Book.newBuilder().setId(bookModel.getId()).setIsBorrowed(true).setName(bookModel.getName()).build();
+        Book book = convertIntoBook(bookModel);
         producer.send(book);
         return bookModel;
+    }
+
+    private Book convertIntoBook(BookModel bookModel) {
+        return Book.newBuilder().setId(bookModel.getId()).setIsBorrowed(bookModel.isBorrowed())
+                .setName(bookModel.getName()).build();
+    }
+
+    public void addBook(BookModel bookModel) {
+        libraryRepository.addBook(bookModel);
+        Book book = convertIntoBook(bookModel);
+        producer.send(book);
     }
 }

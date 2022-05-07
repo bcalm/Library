@@ -1,6 +1,7 @@
 package com.library.repository;
 
 import com.library.domain.BookModel;
+import com.library.schema.Book;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -24,9 +25,13 @@ public class LibraryRepository {
     }
 
     private List<BookModel> getBooks() {
-        BookModel bookModel1 = BookModel.builder().id(1).name("Head first java").build();
-        BookModel bookModel2 = BookModel.builder().id(2).name("Java for dummies").build();
+        BookModel bookModel1 = BookModel.builder().id(1).isBorrowed(false).name("Head first java").build();
+        BookModel bookModel2 = BookModel.builder().id(2).isBorrowed(false).name("Java for dummies").build();
         return asList(bookModel1, bookModel2);
 
+    }
+
+    public void addBook(BookModel bookModel) {
+        library.put(bookModel.getId(), bookModel);
     }
 }

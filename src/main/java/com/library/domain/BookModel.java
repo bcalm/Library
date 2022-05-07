@@ -11,4 +11,5 @@ public class BookModel {
 
     private Integer id;
     private String name;
+    private boolean isBorrowed;
 }
