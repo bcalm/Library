@@ -3,14 +3,14 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: "172.25.10.132:9092"
+    bootstrap-servers: "localhost:9092"
     producer:
       keySerializer: "org.apache.kafka.common.serialization.StringSerializer"
       valueSerializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
       properties:
         schema:
           registry:
-            url: "http://172.25.10.132:8081"
+            url: "http://localhost:8081"
     consumer:
       group-id: "spring-boot-avro-consumer-id"
       keyDeserializer: "org.apache.kafka.common.serialization.StringDeserializer"
@@ -19,7 +19,7 @@ spring:
       properties:
         schema:
           registry:
-            url: "http://172.25.10.132:8081"
+            url: "http://localhost:8081"
         specific:
           avro:
             reader: "true"
@@ -28,6 +28,6 @@ spring:
 
 avro:
   topic:
-    name: "spring.boot.stock.history.avro.topic.v1"
+    name: "test"
 
 

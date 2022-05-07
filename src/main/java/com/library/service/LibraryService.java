@@ -19,9 +19,7 @@ public class LibraryService {
 
     public BookModel getBook(Integer bookId) {
         BookModel bookModel = libraryRepository.borrowBook(bookId);
-        Book book = Book.newBuilder().build();
-        book.setId(bookModel.getId());
-        book.setName(bookModel.getName());
+        Book book = Book.newBuilder().setId(bookModel.getId()).setIsBorrowed(true).setName(bookModel.getName()).build();
         producer.send(book);
         return bookModel;
     }

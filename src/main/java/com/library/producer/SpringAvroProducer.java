@@ -18,19 +18,19 @@ public class SpringAvroProducer {
     @Autowired
     private KafkaTemplate<String, Book> kafkaTemplate;
 
-    public void send(Book Book){
-       ListenableFuture<SendResult<String,Book>> future=  kafkaTemplate.send(topicName,String.valueOf(Book.getId()),Book);
-       future.addCallback(new ListenableFutureCallback<SendResult<String, Book>>() {
-           @Override
-           public void onFailure(Throwable ex) {
-               System.out.println("Message failed to produce");
-           }
+    public void send(Book Book) {
+        ListenableFuture<SendResult<String, Book>> future = kafkaTemplate.send(topicName, String.valueOf(Book.getId()), Book);
+        future.addCallback(new ListenableFutureCallback<SendResult<String, Book>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                System.out.println("Message failed to produce");
+            }
 
-           @Override
-           public void onSuccess(SendResult<String, Book> result) {
-               System.out.println("Avro message successfully produced");
-           }
-       });
+            @Override
+            public void onSuccess(SendResult<String, Book> result) {
+                System.out.println("Avro message successfully produced");
+            }
+        });
 
     }
 
