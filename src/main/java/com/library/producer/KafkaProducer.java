@@ -10,7 +10,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Service
-public class SpringAvroProducer {
+public class KafkaProducer {
 
     @Value("${avro.topic.name}")
     String topicName;

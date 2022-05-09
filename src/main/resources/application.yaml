@@ -28,6 +28,6 @@ spring:
 
 avro:
   topic:
-    name: "test"
+    name: "library"
 
 

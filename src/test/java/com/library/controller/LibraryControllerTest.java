@@ -1,6 +1,7 @@
 package com.library.controller;
 
 import com.library.domain.BookModel;
+import com.library.domain.LibraryStatus;
 import com.library.schema.Book;
 import com.library.service.LibraryService;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @ExtendWith(SpringExtension.class)
 class LibraryControllerTest {
@@ -28,6 +30,7 @@ class LibraryControllerTest {
 
     Integer bookId = 1;
     BookModel bookModel = BookModel.builder().id(bookId).build();
+    LibraryStatus libraryStatus = LibraryStatus.builder().build();
 
     @Test
     void shouldBorrowBook() {
@@ -46,5 +49,15 @@ class LibraryControllerTest {
 
         assertThat(response.getStatusCode(), is(CREATED));
         verify(libraryService).addBook(bookModel);
+    }
+
+    @Test
+    void shouldGetLibraryStatus() {
+        when(libraryService.getStatus()).thenReturn(libraryStatus);
+
+        ResponseEntity<LibraryStatus> response = libraryController.getLibraryStatus();
+
+        assertThat(response.getStatusCode(), is(OK));
+        assertThat(response.getBody(), is(libraryStatus));
     }
 }

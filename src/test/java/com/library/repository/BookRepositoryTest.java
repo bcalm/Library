@@ -11,24 +11,23 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @ExtendWith(SpringExtension.class)
-class LibraryRepositoryTest {
+class BookRepositoryTest {
 
     @InjectMocks
-    LibraryRepository libraryRepository;
+    BookRepositoryImpl bookRepository;
+
+    Integer bookId = 1;
+    BookModel bookModel = BookModel.builder().id(bookId).build();
 
     @Nested
-    class BorrowBook {
-        Integer bookId1 = 1;
-        Integer bookId2 = 2;
+    class AddAndBorrowBook {
 
         @Test
-        void shouldGiveTheBook() {
-            libraryRepository.init();
-            BookModel book1 = libraryRepository.borrowBook(bookId1);
-            BookModel book2 = libraryRepository.borrowBook(bookId2);
+        void shouldAddAndBorrowBook() {
+            bookRepository.addBook(bookModel);
+            BookModel book = bookRepository.borrowBook(bookId);
 
-            assertThat(book1.getId(), is(bookId1));
-            assertThat(book2.getId(), is(bookId2));
+            assertThat(book.getId(), is(bookId));
         }
     }
 
