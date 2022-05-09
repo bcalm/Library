@@ -35,6 +35,18 @@ class LibraryStatusRepositoryImplTest {
     }
 
     @Test
+    void shouldAddAvailableBookAndRemoveFromBorrowList() {
+        libraryStatusRepository.addBorrowedBook(bookName2);
+        libraryStatusRepository.addAvailableBook(bookName2);
+        List<String> availableBooks = libraryStatusRepository.addAvailableBook(bookName);
+
+        assertThat(availableBooks.size(), is(2));
+        assertThat(availableBooks.get(0), is(bookName2));
+        assertThat(libraryStatusRepository.getLibraryStatus().getBorrowedBooksCount(), is(0));
+
+    }
+
+    @Test
     void addBorrowedBook() {
         libraryStatusRepository.addBorrowedBook(bookName2);
         List<String> borrowedBook = libraryStatusRepository.addBorrowedBook(bookName);

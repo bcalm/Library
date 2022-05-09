@@ -21,7 +21,6 @@ public class LibraryController implements LibraryRoute {
 
     public ResponseEntity<BookModel> getBook(Integer bookId) {
         BookModel bookModel = libraryService.getBook(bookId);
-        bookModel.setBorrowed(true);
         return new ResponseEntity<>(bookModel, OK);
     }
 
@@ -33,5 +32,11 @@ public class LibraryController implements LibraryRoute {
     public ResponseEntity<LibraryStatus> getLibraryStatus() {
         LibraryStatus status = libraryService.getStatus();
         return new ResponseEntity<>(status, OK);
+    }
+
+    @Override
+    public ResponseEntity<BookModel> returnBook(Integer bookId) {
+        BookModel bookModel = libraryService.returnBook(bookId);
+        return new ResponseEntity<>(bookModel, OK);
     }
 }

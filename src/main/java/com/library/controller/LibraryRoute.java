@@ -19,4 +19,7 @@ public interface LibraryRoute {
 
     @GetMapping(value = "/library/status")
     ResponseEntity<LibraryStatus> getLibraryStatus();
+
+    @GetMapping(value = "/returnBook/{bookId}")
+    ResponseEntity<BookModel> returnBook(@PathVariable("bookId") Integer bookId);
 }

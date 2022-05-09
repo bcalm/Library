@@ -14,6 +14,13 @@ public class BookRepositoryImpl implements BookRepository {
         return library.get(bookId);
     }
 
+    @Override
+    public BookModel returnBook(Integer bookId) {
+        BookModel bookModel = library.get(bookId);
+        bookModel.setBorrowed(false);
+        return bookModel;
+    }
+
     public void addBook(BookModel bookModel) {
         library.put(bookModel.getId(), bookModel);
     }

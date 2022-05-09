@@ -60,4 +60,14 @@ class LibraryControllerTest {
         assertThat(response.getStatusCode(), is(OK));
         assertThat(response.getBody(), is(libraryStatus));
     }
+
+    @Test
+    void shouldReturnTheBook() {
+        when(libraryService.returnBook(bookId)).thenReturn(bookModel);
+
+        ResponseEntity<BookModel> response = libraryController.returnBook(bookId);
+
+        assertThat(response.getStatusCode(), is(OK));
+        assertThat(response.getBody(), is(bookModel));
+    }
 }

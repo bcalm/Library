@@ -34,6 +34,9 @@ public class LibraryStatusRepositoryImpl implements LibraryStatusRepository {
         Integer availableBooksCount = libraryStatus.getAvailableBooksCount();
         libraryStatus.getAvailableBooks().add(bookName);
         libraryStatus.setAvailableBooksCount(availableBooksCount + 1);
+        if (libraryStatus.getBorrowedBooks().contains(bookName)) {
+            return removeBookFromBorrowList(bookName);
+        }
         return libraryStatus.getAvailableBooks();
     }
 
@@ -53,5 +56,12 @@ public class LibraryStatusRepositoryImpl implements LibraryStatusRepository {
         libraryStatus.getAvailableBooks().remove(bookName);
         libraryStatus.setAvailableBooksCount(availableBooksCount - 1);
         return libraryStatus.getBorrowedBooks();
+    }
+
+    private List<String> removeBookFromBorrowList(String bookName) {
+        Integer borrowedBookCount = libraryStatus.getBorrowedBooksCount();
+        libraryStatus.getBorrowedBooks().remove(bookName);
+        libraryStatus.setBorrowedBooksCount(borrowedBookCount - 1);
+        return libraryStatus.getAvailableBooks();
     }
 }

@@ -70,6 +70,22 @@ class LibraryServiceTest {
     }
 
     @Nested
+    class ReturnBook {
+
+        @Test
+        void shouldReturnTheBook() {
+            when(bookRepository.returnBook(bookId)).thenReturn(bookModel);
+            book.setIsBorrowed(false);
+
+            libraryService.returnBook(bookId);
+
+            verify(bookRepository).returnBook(bookId);
+            verify(producer).send(book);
+        }
+
+    }
+
+    @Nested
     class GetLibraryStatus {
 
         @Test

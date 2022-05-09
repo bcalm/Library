@@ -45,11 +45,6 @@ public class LibraryService {
         return libraryStatusRepository.getLibraryStatus();
     }
 
-    private Book convertIntoBook(BookModel bookModel) {
-        return Book.newBuilder().setId(bookModel.getId()).setIsBorrowed(bookModel.isBorrowed())
-            .setName(bookModel.getName()).build();
-    }
-
     public void updateStatus(ConsumerRecord<Integer, Book> record) {
         List<String> allBooks = libraryStatusRepository.getAllBooks();
         Book book = record.value();
@@ -63,5 +58,17 @@ public class LibraryService {
             return;
         }
         libraryStatusRepository.addAvailableBook(bookName);
+    }
+
+    public BookModel returnBook(Integer bookId) {
+        BookModel bookModel = bookRepository.returnBook(bookId);
+        Book book = convertIntoBook(bookModel);
+        producer.send(book);
+        return bookModel;
+    }
+
+    private Book convertIntoBook(BookModel bookModel) {
+        return Book.newBuilder().setId(bookModel.getId()).setIsBorrowed(bookModel.isBorrowed())
+            .setName(bookModel.getName()).build();
     }
 }
