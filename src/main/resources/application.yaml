@@ -1,5 +1,9 @@
 server:
   port: 9081
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:certificate.p12
+    key-store-password: password
 
 spring:
   kafka:
@@ -24,10 +28,12 @@ spring:
           avro:
             reader: "true"
 
-
-
 avro:
   topic:
     name: "library"
+
+username: "Vikram"
+password: password
+authority: "read"
 
 
