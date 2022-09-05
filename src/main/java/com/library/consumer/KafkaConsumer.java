@@ -1,10 +1,11 @@
 package com.library.consumer;
 
-import com.library.schema.Book;
 import com.library.service.LibraryService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class KafkaConsumer {
@@ -16,7 +17,7 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics = "${avro.topic.name}", containerFactory = "kafkaListenerContainerFactory")
-    public void read(ConsumerRecord<Integer, Book> record) {
+    public void read(ConsumerRecord<Object, Object> record) throws IOException {
         libraryService.updateStatus(record);
     }
 

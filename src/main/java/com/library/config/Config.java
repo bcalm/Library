@@ -1,6 +1,6 @@
 package com.library.config;
 
-import com.library.schema.Book;
+import com.library.domain.BookModel;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +14,14 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 public class Config {
 
     @Bean
-    public ConsumerFactory<String, Book> consumerFactory(KafkaProperties kafkaProperties) {
+    public ConsumerFactory<String, BookModel> consumerFactory(KafkaProperties kafkaProperties) {
         return new DefaultKafkaConsumerFactory<>(kafkaProperties.buildConsumerProperties());
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Book>>
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, BookModel>>
     kafkaListenerContainerFactory(KafkaProperties kafkaProperties) {
-        ConcurrentKafkaListenerContainerFactory<String, Book> factory =
+        ConcurrentKafkaListenerContainerFactory<String, BookModel> factory =
             new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory(kafkaProperties));
         return factory;

@@ -1,8 +1,8 @@
 package com.library.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.library.domain.BookModel;
 import com.library.domain.LibraryStatus;
-import com.library.schema.Book;
 import com.library.service.LibraryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,24 +19,8 @@ public class LibraryController implements LibraryRoute {
         this.libraryService = libraryService;
     }
 
-    public ResponseEntity<BookModel> getBook(Integer bookId) {
-        BookModel bookModel = libraryService.getBook(bookId);
-        return new ResponseEntity<>(bookModel, OK);
-    }
-
-    public ResponseEntity<Book> addBook(BookModel bookModel) {
+    public ResponseEntity<Object> addBook(Object bookModel) throws JsonProcessingException {
         libraryService.addBook(bookModel);
         return new ResponseEntity<>(CREATED);
-    }
-
-    public ResponseEntity<LibraryStatus> getLibraryStatus() {
-        LibraryStatus status = libraryService.getStatus();
-        return new ResponseEntity<>(status, OK);
-    }
-
-    @Override
-    public ResponseEntity<BookModel> returnBook(Integer bookId) {
-        BookModel bookModel = libraryService.returnBook(bookId);
-        return new ResponseEntity<>(bookModel, OK);
     }
 }
