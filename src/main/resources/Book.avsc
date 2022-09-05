@@ -1,0 +1,15 @@
+{
+  "type" : "record",
+  "name" : "Book",
+  "namespace" : "com.library.promo",
+  "fields" : [ {
+    "name" : "id",
+    "type" : "int"
+  }, {
+    "name" : "isBorrowed",
+    "type" : "boolean"
+  }, {
+    "name" : "name",
+    "type" : [ "null", "string" ]
+  } ]
+}

@@ -21,3 +21,14 @@ Confluent
 
 Schema registry
     https://hevodata.com/learn/kafka-schema-registry/
+
+
+----------------------------Spring Security----------------------------
+
+Default configuration:
+- Just add the spring security dependency
+- Run the application it will generate a password
+- Default username is user
+- pass it as basic auth or in authorization header with base64 encoded
+
+- Create self signed ssl certificate to make endpoints compatible with https

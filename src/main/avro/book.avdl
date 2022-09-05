@@ -1,0 +1,11 @@
+@namespace("com.library.promo")
+protocol Book {
+	record Book {
+		int id;
+
+		boolean isBorrowed;
+
+		union{null, string} name;
+
+	}
+}
