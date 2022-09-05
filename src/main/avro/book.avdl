@@ -1,4 +1,4 @@
-@namespace("com.library.promo")
+@namespace("com.library")
 protocol Book {
 	record Book {
 		int id;

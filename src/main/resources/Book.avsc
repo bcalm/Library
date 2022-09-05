@@ -1,7 +1,7 @@
 {
   "type" : "record",
   "name" : "Book",
-  "namespace" : "com.library.promo",
+  "namespace" : "com.library",
   "fields" : [ {
     "name" : "id",
     "type" : "int"
