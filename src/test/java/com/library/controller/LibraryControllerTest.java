@@ -2,6 +2,7 @@ package com.library.controller;
 
 import com.library.domain.BookModel;
 import com.library.domain.LibraryStatus;
+import com.library.schema.Book;
 import com.library.service.LibraryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
