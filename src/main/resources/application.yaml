@@ -23,13 +23,6 @@ spring:
         specific:
           avro:
             reader: "true"
-  security:
-    user:
-      name: "Vikram"
-      password: 123456
-
-
-
 
 avro:
   topic:
