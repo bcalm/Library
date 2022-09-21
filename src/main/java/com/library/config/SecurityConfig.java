@@ -14,8 +14,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests((requests) -> (
             (ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)requests
-                .anyRequest())
-            .authenticated());
+                .antMatchers("/addBook").authenticated()
+                .antMatchers("/welcome"))
+            .permitAll());
         http.formLogin();
         http.httpBasic();
     }
