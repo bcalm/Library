@@ -1,7 +1,15 @@
 server:
   port: 9081
 
+  ssl:
+    enabled: false
+
 spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=library;encrypt=false
+    username: sa
+    password: test@123
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   kafka:
     bootstrap-servers: "localhost:9092"
     producer:
