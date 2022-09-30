@@ -1,6 +1,7 @@
 package com.library.config;
 
 
+import com.library.domain.Authority;
 import com.library.domain.Customer;
 import com.library.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class UsernameAuthenticationProvider implements AuthenticationProvider {
@@ -27,23 +29,31 @@ public class UsernameAuthenticationProvider implements AuthenticationProvider {
     private CustomerRepository customerRepository;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String email = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        List<Customer> customers = customerRepository.findByEmail(email);
-        if (customers.isEmpty()) {
-            throw new BadCredentialsException("User not exist");
+    public Authentication authenticate(Authentication authentication) {
+        String username = authentication.getName();
+        String pwd = authentication.getCredentials().toString();
+        List<Customer> customer = customerRepository.findByEmail(username);
+        if (customer.size() > 0) {
+            if (passwordEncoder.matches(pwd, customer.get(0).getPwd())) {
+                return new UsernamePasswordAuthenticationToken(username, pwd, getGrantedAuthorities(customer.get(0).getAuthorities()));
+            } else {
+                throw new BadCredentialsException("Invalid password!");
+            }
+        }else {
+            throw new BadCredentialsException("No user registered with this details!");
         }
-        if (passwordEncoder.matches(password, customers.get(0).getPwd())) {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(customers.get(0).getRole()));
-            return new UsernamePasswordAuthenticationToken(email, password, authorities);
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (Authority authority : authorities) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
         }
-        throw new BadCredentialsException("password is wrong");
+        return grantedAuthorities;
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    public boolean supports(Class<?> authenticationType) {
+        return authenticationType.equals(UsernamePasswordAuthenticationToken.class);
     }
 }
