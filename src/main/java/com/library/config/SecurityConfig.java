@@ -1,5 +1,7 @@
 package com.library.config;
 
+import com.library.filter.AuthoritiesLoggingAfterFilter;
+import com.library.filter.AuthoritiesLoggingAtFilter;
 import com.library.filter.RequestValidationBeforeFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+            .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+            .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
             .authorizeRequests()
             .antMatchers("/addBook").authenticated()
             .antMatchers("/borrowBook/{bookId}").authenticated()
