@@ -35,3 +35,7 @@ spring:
 avro:
   topic:
     name: "library"
+
+logging:
+  level:
+    org.springframework.security.web.FilterChainProxy: DEBUG
