@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/borrowBook/{bookId}").authenticated()
             .antMatchers("/library/status").authenticated()
             .antMatchers("/returnBook/{bookId}").authenticated()
-            .antMatchers("/welcome").authenticated();
+            .antMatchers("/welcome").hasAnyAuthority("admin");
         http.formLogin();
         http.httpBasic();
     }
