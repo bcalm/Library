@@ -1,8 +1,5 @@
 package com.library.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +10,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "authorities")
-@Getter
-@Setter
 public class Authority {
 
     @Id
@@ -27,4 +22,27 @@ public class Authority {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

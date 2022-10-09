@@ -30,9 +30,6 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws IOException, ServletException {
-//        String authorities = "ROLE_ADMIN";
-//        Authentication authentication = new UsernamePasswordAuthenticationToken("happy",null,
-//            AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (null != authentication) {
             SecretKey key = Keys.hmacShaKeyFor("jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4".getBytes(StandardCharsets.UTF_8));
@@ -50,7 +47,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().equals("/user");
+        return !request.getServletPath().equals("/welcome");
     }
 
     private String populateAuthorities(Collection<? extends GrantedAuthority> collection) {

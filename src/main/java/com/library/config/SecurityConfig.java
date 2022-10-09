@@ -47,7 +47,6 @@ public class SecurityConfig {
                 .antMatchers("/borrowBook/{bookId}").authenticated()
                 .antMatchers("/library/status").authenticated()
                 .antMatchers("/returnBook/{bookId}").authenticated()
-                .antMatchers("/user").authenticated()
                 .antMatchers("/welcome").authenticated()
             )
             .httpBasic(Customizer.withDefaults());

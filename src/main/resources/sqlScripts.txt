@@ -1,66 +1,41 @@
-    CREATE DATABASE library;
+create database library;
 
 use library;
 
-CREATE TABLE customer (
-  id int NOT NULL ,
-  email varchar(45) NOT NULL,
-  pwd varchar(200) NOT NULL,
-  role varchar(45) NOT NULL,
-  PRIMARY KEY (id)
+
+CREATE TABLE customer  (
+   customer_id  int NOT NULL,
+   name  varchar(100) NOT NULL,
+   email  varchar(100) NOT NULL,
+   mobile_number  varchar(20) NOT NULL,
+   pwd  varchar(500) NOT NULL,
+   role  varchar(100) NOT NULL,
+   create_dt  date DEFAULT NULL,
+  PRIMARY KEY ( customer_id )
 );
+
+INSERT INTO  customer  (customer_id, name , email , mobile_number ,  pwd ,  role  )
+ VALUES (1, 'Happy','happy@example.com','9876548337', '$2y$12$oRRbkNfwuR8ug4MlzH5FOeui.//1mkd.RsOAJMbykTSupVy.x/vb2', 'admin');
+
 use library;
 
-CREATE TABLE authorities (
-  id int NOT NULL ,
-  customer_id int NOT NULL,
-  name varchar(50) NOT NULL,
-  PRIMARY KEY (id),
-  CONSTRAINT authorities_ibfk_1 FOREIGN KEY (customer_id) REFERENCES customer (id)
+
+CREATE TABLE  authorities  (
+   id  int NOT NULL ,
+   customer_id  int NOT NULL,
+   name  varchar(50) NOT NULL,
+  PRIMARY KEY ( id ),
+  CONSTRAINT  authorities_ibfk_1  FOREIGN KEY ( customer_id ) REFERENCES  customer  ( customer_id )
 );
 
-INSERT INTO authorities (id, customer_id, name)
- VALUES (1, 2, 'READ');
+INSERT INTO  authorities  (id, customer_id ,  name )
+ VALUES (1, 1, 'READ');
 
-INSERT INTO authorities (id, customer_id, name)
- VALUES (2, 2, 'WRITE');
+INSERT INTO  authorities  ( customer_id ,  name )
+ VALUES (2, 1, 'WRITE');
 
 UPDATE authorities SET name='ROLE_USER' WHERE id=1;
 UPDATE authorities SET name='ROLE_ADMIN' WHERE id=2;
 
 select * from authorities;
-
-INSERT INTO customer
- VALUES (1, 'johndoe@example.com', '$2a$12$Yz2PpQdydWGPM67p2U7/QeAxheHWFaoOIt7qIDenVUe9uRkk6yni.', 'admin');
-
-INSERT INTO customer
- VALUES (2, 'vikram', '$2a$12$Yz2PpQdydWGPM67p2U7/QeAxheHWFaoOIt7qIDenVUe9uRkk6yni.', 'admin');
-
-INSERT INTO customer
- VALUES (3, 'vikram2', '$2a$12$Yz2PpQdydWGPM67p2U7/QeAxheHWFaoOIt7qIDenVUe9uRkk6yni.', 'user');
-
-
- select * from customer
-
-create table users (
-    id INT not null ,
-    username VARCHAR(45) NOT NULL,
-    password VARCHAR(45) NOT NULL,
-    enabled INT NOT NULL,
-    PRIMARY KEY (id)
-)
-
-use library;
-
-create table authorities (
-    id INT not null ,
-    username VARCHAR(45) NOT NULL,
-    authority VARCHAR(45) NOT NULL,
-    PRIMARY KEY (id)
-)
-
-insert  INTO users VALUES (1, 'happy', '12345', 1);
-insert INTO authorities VALUES (1, 'happy', 'write');
-
-select * from users;
-select * from authorities;
+select * from customer;
