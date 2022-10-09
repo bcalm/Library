@@ -2,49 +2,57 @@ package com.library.config;
 
 import com.library.filter.AuthoritiesLoggingAfterFilter;
 import com.library.filter.AuthoritiesLoggingAtFilter;
+import com.library.filter.JWTTokenGeneratorFilter;
+import com.library.filter.JWTTokenValidatorFilter;
 import com.library.filter.RequestValidationBeforeFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import static java.util.Collections.singletonList;
 
 @Configuration
 @Slf4j
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .cors().configurationSource(request -> {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(singletonList("http://localhost:4200"));
+                config.setAllowedMethods(singletonList("*"));
+                config.setAllowCredentials(true);
+                config.setAllowedHeaders(singletonList("*"));
+                config.setExposedHeaders(singletonList("Authorization"));
+                config.setMaxAge(3600L);
+                return config;
+            }).and().csrf().disable()
+            .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
             .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+            .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+            .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
             .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
-            .authorizeRequests()
-            .antMatchers("/addBook").authenticated()
-            .antMatchers("/borrowBook/{bookId}").authenticated()
-            .antMatchers("/library/status").authenticated()
-            .antMatchers("/returnBook/{bookId}").authenticated()
-            .antMatchers("/welcome").hasRole("ADMIN");
-        http.formLogin();
-        http.httpBasic();
+            .authorizeHttpRequests((auth) -> auth
+                .antMatchers("/addBook").authenticated()
+                .antMatchers("/borrowBook/{bookId}").authenticated()
+                .antMatchers("/library/status").authenticated()
+                .antMatchers("/returnBook/{bookId}").authenticated()
+                .antMatchers("/user").authenticated()
+                .antMatchers("/welcome").authenticated()
+            )
+            .httpBasic(Customizer.withDefaults());
+        return http.build();
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        InMemoryUserDetailsManager userDetailService = new InMemoryUserDetailsManager();
-//        UserDetails user = User.withUsername("Vikram").password("123456").authorities("admin").build();
-//        UserDetails user2 = User.withUsername("Vikram").password("12345").authorities("read").build();
-//        userDetailService.createUser(user);
-//        userDetailService.createUser(user2);
-//        auth.userDetailsService(userDetailService);
-//    }
-
-//    @Bean
-//    public UserDetailsService userDetailsService(DataSource dataSource) {
-//        return new JdbcUserDetailsManager(dataSource);
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
