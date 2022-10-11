@@ -5,6 +5,13 @@ server:
     enabled: false
 
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 231591f4acafd18ddef9
+            client-secret: 26e43539838de343f0eeae85c10c729b17e5f970
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=library;encrypt=false
     username: sa
