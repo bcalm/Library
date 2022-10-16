@@ -1,0 +1,13 @@
+Create a client in keycloak with standard flow fill some redirect uri
+
+Create user
+
+Get code:
+
+http://localhost:8080/realms/library/protocol/openid-connect/auth?client_id=libraryAuth&response_type=code&scope=openid&redirect_uri=http://localhost:7080/sample&state=adfasfasfsfssadfsdfa
+
+Get token:
+
+http://localhost:8080/realms/library/protocol/openid-connect/token
+
+Send the token in authorizaiton header with prefix of bearer.
